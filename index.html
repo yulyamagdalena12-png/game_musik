@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Musik Keren</title>
+  <style>
+    :root {
+      --primary-color: #ff4081;
+      --bg-color: #121212;
+      --text-color: #ffffff;
+      --card-color: #1e1e1e;
+      --shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    header {
+      width: 100%;
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    .form {
+      margin: 1rem 0;
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form input, .form button {
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: none;
+      background-color: #2a2a2a;
+      color: var(--text-color);
+    }
+
+    .form button {
+      background-color: var(--primary-color);
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .form button:hover {
+      background-color: #e91e63;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .card {
+      background-color: var(--card-color);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .card h3 {
+      margin: 0.5rem 0;
+      font-size: 1.2rem;
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    footer {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <header>🎵 Musik kak yantii</header>
+
+  <form class="form" id="formTambah">
+    <input type="text" id="judul" placeholder="Judul lagu" required />
+    <input type="file" id="fileAudio" accept="audio/*" required />
+    <button type="submit">Tambah Lagu dari File</button>
+  </form>
+
+  <div class="grid" id="musicGrid"></div>
+
+  <footer>© 2025 Musik Keren. Dibuat dengan ❤️ dan kasih sayang.</footer>
+
+  <script>
+    const grid = document.getElementById("musicGrid");
+    const laguList = [];
+
+    function tampilkanLagu() {
+      grid.innerHTML = "";
+      laguList.forEach(lagu => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="https://picsum.photos/300/200?random=${Math.floor(Math.random()*100)}" alt="Album Art" />
+          <h3>${lagu.judul}</h3>
+          <audio controls>
+            <source src="${lagu.audio}" type="audio/mpeg" />
+            Browser kamu tidak mendukung audio.
+          </audio>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    document.getElementById("formTambah").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const judul = document.getElementById("judul").value.trim();
+      const fileInput = document.getElementById("fileAudio");
+      const file = fileInput.files[0];
+
+      if (judul && file) {
+        const audioURL = URL.createObjectURL(file);
+        laguList.push({ judul, audio: audioURL });
+        tampilkanLagu();
+        this.reset();
+      }
+    });
+  </script>
+</body>
+</html>
